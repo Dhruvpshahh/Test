@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testx/pages/future.dart';
 import 'package:testx/pages/past.dart';
 import 'package:testx/pages/present.dart';
+
+import '../Authenticate/login_sceen1.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -11,6 +14,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  // User? user = FirebaseAuth.instance.currentUser;
+  // UserModel loggedInUser = UserModel();
   int _selectedIndex = 0;
   final screens = [
     PresentPage(),
@@ -48,7 +53,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: ActionChip(label: Text("Logout"), onPressed: () {})),
+              child: ActionChip(
+                  label: Text("Logout"),
+                  onPressed: () {
+                    logout(context);
+                  })),
         ],
       ),
       body: screens[_selectedIndex],
@@ -84,5 +93,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }
