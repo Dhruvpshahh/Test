@@ -16,8 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = new TextEditingController();
 
   //firebase
+  /*----------------------------------------
   // final _auth = FirebaseAuth.instance;
-
+-------------------------------------------*/
   @override
   Widget build(BuildContext context) {
     //email
@@ -79,7 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => MyStatefulWidget()));
+          /*-----------------------------------------------------------------------
           // signIn(emailController.text, passwordController.text);
+
+     -------------------------------------------*/
         },
         child: Text("Login"),
       ),
@@ -128,27 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        // body:Center(
-        //   child: (
-        //       SingleChildScrollView(
-        //     child: Container(
-        //       color: Colors.white,
-        //       child: Form(
-        //         child:Column(
-        //           children: <Widget> [
-        //             emailField,
-        //             passwordField,
-        //           ],
-        //         ) ,
-        //       ),
-        //     ),
-        //   ),
-        //   ),
-        //
-        // ),
       ),
     );
   }
+/*------------------------------------------------------------------------------------------------------------
   //
   // void signIn(String email, String password) async {
   //   if (_formKey.currentState!.validate()) {
@@ -164,4 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //     });
   //   }
   // }
+
+
+ ----------------------------------------------------------------------------------------------------------------------*/
 }

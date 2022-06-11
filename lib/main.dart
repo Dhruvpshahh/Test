@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:testx/Screens/wrapper.dart';
+import 'package:testx/Authenticate/login_sceen1.dart';
 
+// wrapper.dart,sign_in.dart,authenticate.dart are all useless, dont consider them
 void main() {
   runApp(const MyApp());
 }
 
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MyApp());
+// }
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: wrapper(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
