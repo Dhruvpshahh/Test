@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testx/Authenticate/sign_up.dart';
 import 'package:testx/Home/home.dart';
 
@@ -16,9 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = new TextEditingController();
 
   //firebase
-  /*----------------------------------------
-  // final _auth = FirebaseAuth.instance;
--------------------------------------------*/
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     //email
@@ -78,12 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MyStatefulWidget()));
-          /*-----------------------------------------------------------------------
-          // signIn(emailController.text, passwordController.text);
-
-     -------------------------------------------*/
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (context) => MyStatefulWidget()));
+          signIn(emailController.text, passwordController.text);
         },
         child: Text("Login"),
       ),
@@ -135,23 +132,19 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-/*------------------------------------------------------------------------------------------------------------
-  //
-  // void signIn(String email, String password) async {
-  //   if (_formKey.currentState!.validate()) {
-  //     await _auth
-  //         .signInWithEmailAndPassword(email: email, password: password)
-  //         .then((uid) => {
-  //               Fluttertoast.showToast(msg: "Login Successful"),
-  //               Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //                   builder: (context) => MyStatefulWidget())),
-  //             })
-  //         .catchError((e) {
-  //       Fluttertoast.showToast(msg: e!.message);
-  //     });
-  //   }
-  // }
 
-
- ----------------------------------------------------------------------------------------------------------------------*/
+  void signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+                Fluttertoast.showToast(msg: "Login Successful"),
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => MyStatefulWidget())),
+              })
+          .catchError((e) {
+        Fluttertoast.showToast(msg: e!.message);
+      });
+    }
+  }
 }
