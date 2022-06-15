@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.redAccent,
+      color: Colors.lightGreen,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
@@ -87,10 +87,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     return Center(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle:true,
+          backgroundColor: Colors.blue,
+          title:Text(
+            'AUCTIONEER'
+          ),
+        ),
+        backgroundColor: Colors.yellowAccent,
         body: Center(
           child: Container(
-            color: Colors.white,
+            color: Colors.white70,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(36.0),
@@ -110,7 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(height: 50),
                                 Text("Dont have an account?"),
+                                SizedBox(width: 10),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -119,7 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                             builder: (context) =>
                                                 RegistrationScreen()));
                                   },
-                                  child: Text("SignUp"),
+
+                                  child: Text("SignUp", style: TextStyle(
+                                    color: Colors.red,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  ),
                                 )
                               ],
                             )
