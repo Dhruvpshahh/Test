@@ -80,19 +80,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
       body: Container(
         width: _width,
         height: _height,
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text(
-                  'Choose Date',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5),
-                ),
                 InkWell(
                   onTap: () {
                     _selectDate(context);
@@ -102,9 +95,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     height: _height / 9,
                     margin: EdgeInsets.only(top: 30),
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(color: Colors.grey[200]),
+                    decoration: BoxDecoration(color: Colors.blueAccent),
                     child: TextFormField(
-                      style: TextStyle(fontSize: 40),
+                      style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.center,
                       enabled: false,
                       keyboardType: TextInputType.text,
@@ -124,13 +117,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
             ),
             Column(
               children: <Widget>[
-                Text(
-                  'Choose Time',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5),
-                ),
                 InkWell(
                   onTap: () {
                     _selectTime(context);
@@ -140,9 +126,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     width: _width / 1.7,
                     height: _height / 9,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(color: Colors.grey[200]),
+                    decoration: BoxDecoration(color: Colors.redAccent),
                     child: TextFormField(
-                      style: TextStyle(fontSize: 40),
+                      style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.center,
                       onSaved: (String? val) {
                         _setTime = val!;
