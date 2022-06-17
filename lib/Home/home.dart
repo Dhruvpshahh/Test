@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:testx/pages/future.dart';
 import 'package:testx/pages/past.dart';
 import 'package:testx/pages/present.dart';
+import 'package:testx/pages/add_item.dart';
 
 import '../Authenticate/login_sceen1.dart';
 
@@ -21,6 +22,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     PresentPage(),
     FuturePage(),
     PastPage(),
+   // MainPage(),
   ];
   // static const TextStyle optionStyle =
   //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -91,7 +93,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         unselectedFontSize: 12,
         //showSelectedLabels: false,
         onTap: _onItemTapped,
-      ),
+      ),floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => date_try(),
+            ));
+      }
+      ,
+      child: const Icon(Icons.add),
+    ),
+
     );
   }
 
