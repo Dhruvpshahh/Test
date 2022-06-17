@@ -40,6 +40,7 @@ dependencies:
   firebase_core: ^1.17.1
   fluttertoast: ^8.0.9
   intl: ^0.17.0
+  date_format: ^2.0.6
 
   #flutter_core: ^1.0.2
 dev_dependencies:
