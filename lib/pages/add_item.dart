@@ -1,7 +1,8 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:testx/pages/gallery.dart';
+import 'package:testx/pages/img.dart';
 
 class DateTimePicker extends StatefulWidget {
   @override
@@ -57,6 +58,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
       });
   }
 
+  void _handleURLButtonPress(BuildContext context, var type) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
+  }
+
   @override
   void initState() {
     _dateController.text = DateFormat.yMd().format(DateTime.now());
@@ -78,107 +84,127 @@ class _DateTimePickerState extends State<DateTimePicker> {
         title: Text('Date time picker'),
       ),
       body: Container(
-        width: _width,
-        height: _height,
-        child: Column(
-          children: <Widget>[
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+          width: _width,
+          height: _height,
+          child: Column(
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {
-                            _selectDate(context);
-                          },
-                          child: Container(
-                            width: 80,
-                            height: _height / 20,
-                            margin: EdgeInsets.only(top: 30, left: 20),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(color: Colors.blueAccent),
-                            child: TextFormField(
-                              style: TextStyle(fontSize: 15),
-                              textAlign: TextAlign.center,
-                              enabled: false,
-                              keyboardType: TextInputType.text,
-                              controller: _dateController,
-                              onSaved: (String? val) {
-                                _setDate = val!;
-                              },
-                              decoration: InputDecoration(
-                                  disabledBorder:
-                                  UnderlineInputBorder(borderSide: BorderSide.none),
-                                  // labelText: 'Time',
-                                  contentPadding: EdgeInsets.only(top: 0.0)),
-                            ),
-                          ),
-                        ),
-                      ],
+                  MaterialButton(
+                    color: Colors.blue,
+                    child: Text(
+                      "Pick Image from Gallery",
+                      style: TextStyle(
+                          color: Colors.white70, fontWeight: FontWeight.bold),
                     ),
-
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {
-                            _selectTime(context);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(top: 30),
-                            width: 80,
-                            height: _height / 20,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(color: Colors.redAccent),
-                            child: TextFormField(
-                              style: TextStyle(fontSize: 15),
-                              textAlign: TextAlign.center,
-                              onSaved: (String? val) {
-                                _setTime = val!;
-                              },
-                              enabled: false,
-                              keyboardType: TextInputType.text,
-                              controller: _timeController,
-                              decoration: InputDecoration(
-                                  disabledBorder:
-                                  UnderlineInputBorder(borderSide: BorderSide.none),
-                                  // labelText: 'Time',
-                                  contentPadding: EdgeInsets.all(5)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]
-            ),
-            Row(
-              children: <Widget>[
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.amber,
-                  child: MaterialButton(
-                    padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                    minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
+                      _handleURLButtonPress(context, ImageSourceType.gallery);
                     },
-                    child: Text("Add this item"),
                   ),
-                ),
-              ],
-
-
-            ),
-          ],
-        )
-
-
-      ),
+                  MaterialButton(
+                    color: Colors.blue,
+                    child: Text(
+                      "Pick Image from Camera",
+                      style: TextStyle(
+                          color: Colors.white70, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      _handleURLButtonPress(context, ImageSourceType.camera);
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              _selectDate(context);
+                            },
+                            child: Container(
+                              width: 80,
+                              height: _height / 20,
+                              margin: EdgeInsets.only(top: 30, left: 20),
+                              alignment: Alignment.center,
+                              decoration:
+                                  BoxDecoration(color: Colors.blueAccent),
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 15),
+                                textAlign: TextAlign.center,
+                                enabled: false,
+                                keyboardType: TextInputType.text,
+                                controller: _dateController,
+                                onSaved: (String? val) {
+                                  _setDate = val!;
+                                },
+                                decoration: InputDecoration(
+                                    disabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    // labelText: 'Time',
+                                    contentPadding: EdgeInsets.only(top: 0.0)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              _selectTime(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 30),
+                              width: 80,
+                              height: _height / 20,
+                              alignment: Alignment.center,
+                              decoration:
+                                  BoxDecoration(color: Colors.redAccent),
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 15),
+                                textAlign: TextAlign.center,
+                                onSaved: (String? val) {
+                                  _setTime = val!;
+                                },
+                                enabled: false,
+                                keyboardType: TextInputType.text,
+                                controller: _timeController,
+                                decoration: InputDecoration(
+                                    disabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    // labelText: 'Time',
+                                    contentPadding: EdgeInsets.all(5)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+              Row(
+                children: <Widget>[
+                  Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.amber,
+                    child: MaterialButton(
+                      padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      minWidth: MediaQuery.of(context).size.width,
+                      onPressed: () {},
+                      child: Text("Add this item"),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )),
     );
   }
 }
