@@ -88,7 +88,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
           height: _height,
           child: Column(
             children: <Widget>[
-              Row(
+              SizedBox(height: 20),
+              Column(
                 children: <Widget>[
                   MaterialButton(
                     color: Colors.blue,
@@ -101,6 +102,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       _handleURLButtonPress(context, ImageSourceType.gallery);
                     },
                   ),
+                  SizedBox(height: 20),
                   MaterialButton(
                     color: Colors.blue,
                     child: Text(
@@ -114,6 +116,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   ),
                 ],
               ),
+              SizedBox(height: 20),
               Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -188,6 +191,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       ),
                     ),
                   ]),
+              SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   Material(
