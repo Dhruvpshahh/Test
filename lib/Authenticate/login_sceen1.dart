@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.lightGreen,
+      color: Colors.amber,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
             'AUCTIONEER'
           ),
         ),
-        backgroundColor: Colors.yellowAccent,
+        backgroundColor: Colors.lightBlue[100],
         body: Center(
           child: Container(
             color: Colors.white70,
