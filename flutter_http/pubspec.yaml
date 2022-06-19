@@ -1,4 +1,4 @@
-name: testx
+name: flutter_http
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -31,20 +31,10 @@ dependencies:
     sdk: flutter
 
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  firebase_auth: ^3.3.19
-  cloud_firestore: ^3.1.17
-  firebase_core: ^1.17.1
-  fluttertoast: ^8.0.9
-  intl: ^0.17.0
-  date_format: ^2.0.6
-  image_picker: ^0.8.5+3
-  http: ^0.13.4
 
-  #flutter_core: ^1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
