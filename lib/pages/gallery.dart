@@ -41,9 +41,7 @@ class ImageFromGalleryExState extends State<ImageFromGalleryEx> {
           Center(
             child: GestureDetector(
               onTap: () async {
-                var source = type == ImageSourceType.camera
-                    ? ImageSource.camera
-                    : ImageSource.gallery;
+                var source = ImageSource.gallery;
                 XFile image = await imagePicker.pickImage(
                     source: source,
                     imageQuality: 50,

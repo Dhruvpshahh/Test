@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:testx/pages/gallery.dart';
-import 'package:testx/pages/img.dart';
 
 class DateTimePicker extends StatefulWidget {
   @override
@@ -18,10 +23,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
   late String _hour, _minute, _time;
 
   late String dateTime;
-
+  String title = "";
+  String description = "";
   DateTime selectedDate = DateTime.now();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  DateTime? pickedDateTime;
 
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
@@ -29,10 +36,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        //initialDate: selectedDate,
         initialDatePickerMode: DatePickerMode.day,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2101));
+        // firstDate: DateTime(2015),
+        // lastDate: DateTime(2101));
+        initialDate: DateTime.now().add(Duration(days: 1)),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 30)));
     if (picked != null)
       setState(() {
         selectedDate = picked;
@@ -56,13 +66,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, " ", am]).toString();
       });
+    if (selectedTime != null) {
+      setState(() {
+        pickedDateTime = DateTime(selectedDate!.year, selectedDate!.month,
+            selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
+      });
+    }
   }
 
-  void _handleURLButtonPress(BuildContext context, var type) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
-  }
-
+  var _image;
+  var imagePicker;
+  bool submitted = false;
   @override
   void initState() {
     _dateController.text = DateFormat.yMd().format(DateTime.now());
@@ -71,6 +85,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
         [hh, ':', nn, " ", am]).toString();
     super.initState();
+    imagePicker = new ImagePicker();
   }
 
   @override
@@ -88,35 +103,83 @@ class _DateTimePickerState extends State<DateTimePicker> {
           height: _height,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20),
+              // SizedBox(height: 20),
               Column(
                 children: <Widget>[
-                  MaterialButton(
-                    color: Colors.blue,
-                    child: Text(
-                      "Pick Image from Gallery",
-                      style: TextStyle(
-                          color: Colors.white70, fontWeight: FontWeight.bold),
+                  // SizedBox(
+                  //   height: 52,
+                  // ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () async {
+                        var source = ImageSource.gallery;
+                        XFile image = await imagePicker.pickImage(
+                            source: source,
+                            imageQuality: 50,
+                            preferredCameraDevice: CameraDevice.front);
+                        setState(() {
+                          _image = File(image.path);
+                        });
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(color: Colors.red[200]),
+                        child: _image != null
+                            ? Image.file(
+                                _image,
+                                width: 200.0,
+                                height: 200.0,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Container(
+                                decoration:
+                                    BoxDecoration(color: Colors.red[200]),
+                                width: 200,
+                                height: 200,
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                      ),
                     ),
-                    onPressed: () {
-                      _handleURLButtonPress(context, ImageSourceType.gallery);
-                    },
                   ),
-                  SizedBox(height: 20),
-                  MaterialButton(
-                    color: Colors.blue,
-                    child: Text(
-                      "Pick Image from Camera",
-                      style: TextStyle(
-                          color: Colors.white70, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      _handleURLButtonPress(context, ImageSourceType.camera);
+                  TextFormField(
+                    onChanged: (value) {
+                      title = value;
                     },
+                    validator: (value) {
+                      if (value == null || value == "")
+                        return "This field cannot be null";
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.title),
+                        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        hintText: "Title",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
+                      description = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value == "")
+                        return "This field cannot be null";
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.description_rounded),
+                        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        hintText: "Description",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10))),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 16),
               Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -192,21 +255,74 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     ),
                   ]),
               SizedBox(height: 20),
-              Row(
-                children: <Widget>[
-                  Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.amber,
-                    child: MaterialButton(
-                      padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                      minWidth: MediaQuery.of(context).size.width,
-                      onPressed: () {},
-                      child: Text("Add this item"),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: <Widget>[
+              //     Material(
+              //         elevation: 5,
+              //         borderRadius: BorderRadius.circular(30),
+              //         color: Colors.amber,
+              //
+              //   ],
+              // ),
+              ElevatedButton(
+                  onPressed: () async {
+                    if (submitted == true) return;
+                    //bool validate = formKey.currentState!.validate();
+                    // if (!validate) return;
+                    if (_image == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Choose an image")));
+                      return;
+                    }
+                    if (selectedDate == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("Pick date and time for start auction")));
+                      return;
+                    }
+                    submitted =
+                        true; // setting the submission status to true now
+                    var bytes = _image!.readAsBytesSync();
+                    var headers = {
+                      'Authorization': 'Client-ID f94d5cd3c5c3a07'
+                    };
+                    var request = http.MultipartRequest(
+                        'POST', Uri.parse('https://api.imgur.com/3/image'));
+                    request.fields.addAll({
+                      'image': base64Encode(bytes),
+                    });
+
+                    request.headers.addAll(headers);
+
+                    http.StreamedResponse response = await request.send();
+
+                    if (response.statusCode == 200) {
+                      var data = await response.stream.bytesToString();
+                      print(data);
+                      var body = jsonDecode(data);
+                      print(body);
+                      var imageURL = body["data"]["link"];
+                      await FirebaseFirestore.instance
+                          .collection('auction_items')
+                          .add({
+                        "title": title,
+                        "description": description,
+                        "imageURL": imageURL,
+                        "timestamp": Timestamp.fromDate(pickedDateTime!),
+                        //  "selectedtime": selectedTime,
+                        "seller": FirebaseAuth.instance.currentUser!.email,
+                        "bidPrice": 0,
+                        "bidder": "",
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Item added to future auctions")));
+                      Navigator.pop(context);
+                    } else {
+                      submitted = false;
+                      print(response.reasonPhrase);
+                    }
+                  },
+                  child: Text("Add this Item"))
             ],
           )),
     );
