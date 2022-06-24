@@ -184,7 +184,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
               Row(crossAxisAlignment: CrossAxisAlignment.center, children: <
                   Widget>[
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
                     children: <Widget>[
                       InkWell(
@@ -263,84 +263,87 @@ class _DateTimePickerState extends State<DateTimePicker> {
               //
               //   ],
               // ),
-              ElevatedButton(
-                  // color: Colors.blue,
-                  onPressed: () async {
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    );
+              new SizedBox(
+                  width: 200.0,
+                  height: 40.0,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        );
 
-                    if (submitted == true) return;
-                    //bool validate = formKey.currentState!.validate();
-                    // if (!validate) return;
-                    if (_image == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Choose an image")));
-                      return;
-                    }
-                    if (pickedDateTime == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text("Pick date and time for start auction")));
-                      return;
-                    }
-                    if (title == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Title cannot be empty")));
-                      return;
-                    }
-                    if (description == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Description cannot be empty")));
-                      return;
-                    }
-                    submitted =
-                        true; // setting the submission status to true now
-                    var bytes = _image!.readAsBytesSync();
-                    var headers = {
-                      'Authorization': 'Client-ID f94d5cd3c5c3a07'
-                    };
-                    var request = http.MultipartRequest(
-                        'POST', Uri.parse('https://api.imgur.com/3/image'));
-                    request.fields.addAll({
-                      'image': base64Encode(bytes),
-                    });
+                        if (submitted == true) return;
+                        //bool validate = formKey.currentState!.validate();
+                        // if (!validate) return;
+                        if (_image == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Choose an image")));
+                          return;
+                        }
+                        if (pickedDateTime == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("Pick date and time for start auction")));
+                          return;
+                        }
+                        if (title == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Title cannot be empty")));
+                          return;
+                        }
+                        if (description == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Description cannot be empty")));
+                          return;
+                        }
+                        submitted =
+                            true; // setting the submission status to true now
+                        var bytes = _image!.readAsBytesSync();
+                        var headers = {
+                          'Authorization': 'Client-ID f94d5cd3c5c3a07'
+                        };
+                        var request = http.MultipartRequest(
+                            'POST', Uri.parse('https://api.imgur.com/3/image'));
+                        request.fields.addAll({
+                          'image': base64Encode(bytes),
+                        });
 
-                    request.headers.addAll(headers);
+                        request.headers.addAll(headers);
 
-                    http.StreamedResponse response = await request.send();
+                        http.StreamedResponse response = await request.send();
 
-                    if (response.statusCode == 200) {
-                      var data = await response.stream.bytesToString();
-                      print(data);
-                      var body = jsonDecode(data);
-                      print(body);
-                      var imageURL = body["data"]["link"];
-                      await FirebaseFirestore.instance
-                          .collection('auction_items')
-                          .add({
-                        "title": title,
-                        "description": description,
-                        "imageURL": imageURL,
-                        "timestamp": Timestamp.fromDate(pickedDateTime!),
-                        //  "selectedtime": selectedTime,
-                        "seller": FirebaseAuth.instance.currentUser!.email,
-                        "bidPrice": 0,
-                        "bidder": "",
-                      });
-                      // return Center(
-                      //   child: CircularProgressIndicator(),
-                      // );
+                        if (response.statusCode == 200) {
+                          var data = await response.stream.bytesToString();
+                          print(data);
+                          var body = jsonDecode(data);
+                          print(body);
+                          var imageURL = body["data"]["link"];
+                          await FirebaseFirestore.instance
+                              .collection('auction_items')
+                              .add({
+                            "title": title,
+                            "description": description,
+                            "imageURL": imageURL,
+                            "timestamp": Timestamp.fromDate(pickedDateTime!),
+                            //  "selectedtime": selectedTime,
+                            "seller": FirebaseAuth.instance.currentUser!.email,
+                            "bidPrice": 0,
+                            "bidder": "",
+                          });
+                          // return Center(
+                          //   child: CircularProgressIndicator(),
+                          // );
 
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Item added to future auctions")));
-                      Navigator.pop(context);
-                    } else {
-                      submitted = false;
-                      print(response.reasonPhrase);
-                    }
-                  },
-                  child: Text("Add this Item"))
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text("Item added to future auctions")));
+                          Navigator.pop(context);
+                        } else {
+                          submitted = false;
+                          print(response.reasonPhrase);
+                        }
+                      },
+                      child: Text("Add this Item"))
+              )
             ],
           )),
     );
