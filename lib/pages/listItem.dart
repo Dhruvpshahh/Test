@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/new_item.dart';
-
 class ListItemWidget extends StatelessWidget {
-
   final String id;
   final String title;
   final String description;
@@ -13,7 +10,17 @@ class ListItemWidget extends StatelessWidget {
   final String bidderEmail;
   final bidPrice;
 
-  const ListItemWidget({Key? key, required this.id ,required this.title,required this.sellerEmail,required this.description,required this.imageURL,required this.date, required this.bidPrice ,required this.bidderEmail}) : super(key: key);
+  const ListItemWidget(
+      {Key? key,
+      required this.id,
+      required this.title,
+      required this.sellerEmail,
+      required this.description,
+      required this.imageURL,
+      required this.date,
+      required this.bidPrice,
+      required this.bidderEmail})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +32,16 @@ class ListItemWidget extends StatelessWidget {
       //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainAuctionPage(auctionModel: AuctionPageModel(id: id, title: title, sellerEmail: sellerEmail, description: description, imageURL: imageURL, date: date, bidderEmail: bidderEmail, bidPrice: bidPrice))));
       // },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 15,vertical: 4),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(21)
-        ),
+            color: Colors.blue, borderRadius: BorderRadius.circular(21)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 194),
               child: Padding(
-                padding: const EdgeInsets.only(left: 16,right: 10),
+                padding: const EdgeInsets.only(left: 16, right: 10),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,9 +54,7 @@ class ListItemWidget extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16
-                        ),
+                            fontWeight: FontWeight.w400, fontSize: 16),
                       ),
                     ),
                   ],
@@ -59,15 +62,17 @@ class ListItemWidget extends StatelessWidget {
               ),
             ),
             ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 105,maxWidth: 135),
+              constraints: BoxConstraints(maxHeight: 105, maxWidth: 135),
               child: ClipRRect(
-                borderRadius: BorderRadius.only(topRight: Radius.circular(21),bottomRight: Radius.circular(21)),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(21),
+                    bottomRight: Radius.circular(21)),
                 child: Container(
                   alignment: Alignment.center,
-                  width: screenWidth*0.35,
+                  width: screenWidth * 0.35,
                   decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(imageURL),fit: BoxFit.cover)
-                  ),
+                      image: DecorationImage(
+                          image: NetworkImage(imageURL), fit: BoxFit.cover)),
                 ),
               ),
             )

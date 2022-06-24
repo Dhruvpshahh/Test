@@ -23,11 +23,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
   late String _hour, _minute, _time;
 
   late String dateTime;
-  String title = "";
-  String description = "";
+  String? title;
+  String? description;
   DateTime selectedDate = DateTime.now();
 
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay? selectedTime;
   DateTime? pickedDateTime;
 
   TextEditingController _dateController = TextEditingController();
@@ -53,23 +53,23 @@ class _DateTimePickerState extends State<DateTimePicker> {
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedTime,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null)
       setState(() {
         selectedTime = picked;
-        _hour = selectedTime.hour.toString();
-        _minute = selectedTime.minute.toString();
+        _hour = selectedTime!.hour.toString();
+        _minute = selectedTime!.minute.toString();
         _time = _hour + ' : ' + _minute;
         _timeController.text = _time;
         _timeController.text = formatDate(
-            DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+            DateTime(2019, 08, 1, selectedTime!.hour, selectedTime!.minute),
             [hh, ':', nn, " ", am]).toString();
       });
     if (selectedTime != null) {
       setState(() {
-        pickedDateTime = DateTime(selectedDate!.year, selectedDate!.month,
-            selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
+        pickedDateTime = DateTime(selectedDate.year, selectedDate.month,
+            selectedDate.day, selectedTime!.hour, selectedTime!.minute);
       });
     }
   }
@@ -96,14 +96,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Date time picker'),
+        title: Text('Add an item'),
       ),
       body: Container(
           width: _width,
           height: _height,
           child: Column(
             children: <Widget>[
-              // SizedBox(height: 20),
+              SizedBox(height: 10),
               Column(
                 children: <Widget>[
                   // SizedBox(
@@ -124,7 +124,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       child: Container(
                         width: 200,
                         height: 200,
-                        decoration: BoxDecoration(color: Colors.red[200]),
+                        decoration: BoxDecoration(color: Colors.white38),
                         child: _image != null
                             ? Image.file(
                                 _image,
@@ -133,18 +133,18 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                 fit: BoxFit.fitHeight,
                               )
                             : Container(
-                                decoration:
-                                    BoxDecoration(color: Colors.red[200]),
+                                decoration: BoxDecoration(color: Colors.grey),
                                 width: 200,
                                 height: 200,
                                 child: Icon(
-                                  Icons.camera_alt,
+                                  Icons.image_rounded,
                                   color: Colors.grey[800],
                                 ),
                               ),
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
                   TextFormField(
                     onChanged: (value) {
                       title = value;
@@ -161,6 +161,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
+                  SizedBox(height: 10),
                   TextFormField(
                     onChanged: (value) {
                       description = value;
@@ -180,80 +181,78 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 ],
               ),
               SizedBox(height: 16),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: <Widget>[
-                          InkWell(
-                            onTap: () {
-                              _selectDate(context);
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: <
+                  Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Container(
+                          width: 100,
+                          height: _height / 20,
+                          margin: EdgeInsets.only(left: 20),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(color: Colors.blueAccent),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 15),
+                            textAlign: TextAlign.center,
+                            enabled: false,
+                            keyboardType: TextInputType.text,
+                            controller: _dateController,
+                            onSaved: (String? val) {
+                              _setDate = val!;
                             },
-                            child: Container(
-                              width: 80,
-                              height: _height / 20,
-                              margin: EdgeInsets.only(top: 30, left: 20),
-                              alignment: Alignment.center,
-                              decoration:
-                                  BoxDecoration(color: Colors.blueAccent),
-                              child: TextFormField(
-                                style: TextStyle(fontSize: 15),
-                                textAlign: TextAlign.center,
-                                enabled: false,
-                                keyboardType: TextInputType.text,
-                                controller: _dateController,
-                                onSaved: (String? val) {
-                                  _setDate = val!;
-                                },
-                                decoration: InputDecoration(
-                                    disabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide.none),
-                                    // labelText: 'Time',
-                                    contentPadding: EdgeInsets.only(top: 0.0)),
-                              ),
-                            ),
+                            decoration: InputDecoration(
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                // labelText: 'Date',
+                                contentPadding: EdgeInsets.only(bottom: 5.0)),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: <Widget>[
-                          InkWell(
-                            onTap: () {
-                              _selectTime(context);
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          _selectTime(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 20),
+                          width: 100,
+                          height: _height / 20,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(color: Colors.redAccent),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 15),
+                            textAlign: TextAlign.center,
+                            onSaved: (String? val) {
+                              _setTime = val!;
                             },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 30),
-                              width: 80,
-                              height: _height / 20,
-                              alignment: Alignment.center,
-                              decoration:
-                                  BoxDecoration(color: Colors.redAccent),
-                              child: TextFormField(
-                                style: TextStyle(fontSize: 15),
-                                textAlign: TextAlign.center,
-                                onSaved: (String? val) {
-                                  _setTime = val!;
-                                },
-                                enabled: false,
-                                keyboardType: TextInputType.text,
-                                controller: _timeController,
-                                decoration: InputDecoration(
-                                    disabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide.none),
-                                    // labelText: 'Time',
-                                    contentPadding: EdgeInsets.all(5)),
-                              ),
-                            ),
+                            enabled: false,
+                            keyboardType: TextInputType.text,
+                            controller: _timeController,
+                            decoration: InputDecoration(
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                //labelText: 'Time',
+                                hintText: 'Time',
+                                contentPadding: EdgeInsets.only(bottom: 5)),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
+                ),
+              ]),
               SizedBox(height: 20),
               // Row(
               //   children: <Widget>[
@@ -267,6 +266,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
               ElevatedButton(
                   // color: Colors.blue,
                   onPressed: () async {
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    );
+
                     if (submitted == true) return;
                     //bool validate = formKey.currentState!.validate();
                     // if (!validate) return;
@@ -275,10 +278,20 @@ class _DateTimePickerState extends State<DateTimePicker> {
                           SnackBar(content: Text("Choose an image")));
                       return;
                     }
-                    if (selectedDate == null) {
+                    if (pickedDateTime == null) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content:
                               Text("Pick date and time for start auction")));
+                      return;
+                    }
+                    if (title == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Title cannot be empty")));
+                      return;
+                    }
+                    if (description == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Description cannot be empty")));
                       return;
                     }
                     submitted =
@@ -315,7 +328,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         "bidPrice": 0,
                         "bidder": "",
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      // return Center(
+                      //   child: CircularProgressIndicator(),
+                      // );
+
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Item added to future auctions")));
                       Navigator.pop(context);
                     } else {
