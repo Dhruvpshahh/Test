@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:testx/model/new_item.dart';
+import 'package:testx/pages/AuctionPage.dart';
 
 class ListItemWidget extends StatelessWidget {
   final String id;
@@ -28,9 +30,9 @@ class ListItemWidget extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      // onTap: (){
-      //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainAuctionPage(auctionModel: AuctionPageModel(id: id, title: title, sellerEmail: sellerEmail, description: description, imageURL: imageURL, date: date, bidderEmail: bidderEmail, bidPrice: bidPrice))));
-      // },
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainAuctionPage(auctionModel: AuctionPageModel(id: id, title: title, sellerEmail: sellerEmail, description: description, imageURL: imageURL, date: date, bidderEmail: bidderEmail, bidPrice: bidPrice))));
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         decoration: BoxDecoration(
