@@ -70,12 +70,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         backgroundColor: Colors.blue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.pause_circle),
             label: 'Present',
             // backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.arrow_circle_right),
             label: 'Future',
             // backgroundColor: Colors.red,
           ),
