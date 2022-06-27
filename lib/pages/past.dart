@@ -8,9 +8,7 @@ class PastPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Past'),
-        ),
+
         body: Center(
           child: StreamBuilder(
             stream:

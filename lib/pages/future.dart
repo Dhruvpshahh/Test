@@ -8,9 +8,7 @@ class FuturePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Future'),
-        ),
+
         body: Center(
           child: StreamBuilder(
             stream:

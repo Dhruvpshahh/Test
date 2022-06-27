@@ -80,7 +80,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             // backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.history),
             label: 'Past',
             //backgroundColor: Colors.teal,
           ),

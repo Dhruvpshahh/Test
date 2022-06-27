@@ -8,9 +8,6 @@ class PresentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Present'),
-        ),
         body: Center(
           child: StreamBuilder(
             stream:
